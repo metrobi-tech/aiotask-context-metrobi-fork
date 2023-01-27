@@ -55,7 +55,7 @@ def chainmap_context_factory(parent_context=None):
         return parent_context.new_child()
 
 
-def task_factory(loop, coro, copy_context=False, context_factory=None):
+def task_factory(loop, coro, copy_context=False, context_factory=None, context=None):
     """
     By default returns a task factory that uses a simple dict as the task context,
     but allows context creation and inheritance to be customized via ``context_factory``.
@@ -68,7 +68,7 @@ def task_factory(loop, coro, copy_context=False, context_factory=None):
         del task._source_traceback[-1]
 
     try:
-        context = asyncio_current_task(loop=loop).context
+        context = context or asyncio_current_task(loop=loop).context
     except AttributeError:
         context = None
 
